@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Demo</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+
+<div class="col">
+	DPS Stats:
+	<table id="DPSStats" class="stats" border="1">
+		<tr>
+			<td>Dexterity:</td>
+			<td><input id="dexterity" type="number" data-precision="0" /></td>
+		</tr>
+		<tr>
+			<td>IAS:</td>
+			<td><input id="IAS" type="number" data-precision="2" /></td>
+		</tr>
+		<tr>
+			<td>Crit Chance:</td>
+			<td><input id="CHC" type="number" data-precision="3" /></td>
+		</tr>
+		<tr>
+			<td>Crit Damage:</td>
+			<td><input id="CHD" type="number" data-precision="2" /></td>
+		</tr>
+		<tr>
+			<td>Elemental Damage:</td>
+			<td><input type="number" id="elementalDamageBonus" data-precision="2" /></td>
+		</tr>
+		<tr>
+			<td>Lightning Skill Damage Bonus:</td>
+			<td><input type="number" id="lightningSkillBonus" data-precision="2" /></td>
+		</tr>
+		<tr>
+			<td>Fists of Thunder Damage Bonus:</td>
+			<td><input type="number" id="FoTBonus" data-precision="2" /></td>
+		</tr>
+		<tr>
+			<td>Sweeping Wind Damage Bonus:</td>
+			<td><input type="number" id="SWBonus" data-precision="2" /></td>
+		</tr>
+		<tr>
+			<td>Bonus Min Damage:</td>
+			<td><input type="number" id="bonusMin" data-precision="0" /></td>
+		</tr>
+		<tr>
+			<td>Bonus Max Damage:</td>
+			<td><input type="number" id="bonusMax" data-precision="0" /></td>
+		</tr>
+	</table>
+</div>
+
+<div class="col">
+	Main Hand: <br />
+	<table id="mainHand" class="stats" border="1">
+		<tr>
+			<td>APS:</td>
+			<td><input type="number" id="mainHandAPS" data-precision="2" /></td>
+		</tr>
+		<tr>
+			<td>Min Base Damage:</td>
+			<td><input type="number" id="mainHandBaseMin" data-precision="2" /></td>
+		</tr>
+		<tr>
+			<td>Max Base Damage:</td>
+			<td><input type="number" id="mainHandBaseMax" data-precision="2" /></td>
+		</tr>
+		<tr>
+			<td>Min Physical Damage:</td>
+			<td><input type="number" id="mainHandPhysMin" data-precision="2" /></td>
+		</tr>
+		<tr>
+			<td>Max Physical Damage:</td>
+			<td><input type="number" id="mainHandPhysMax" data-precision="2" /></td>
+		</tr>
+	</table>
+	
+	<br />
+	
+	Off Hand: <br />
+	<table id="offHand" class="stats" border="1">
+		<tr>
+			<td>APS:</td>
+			<td><input type="number" id="offHandAPS" data-precision="2" /></td>
+		</tr>
+		<tr>
+			<td>Min Base Damage:</td>
+			<td><input type="number" id="offHandBaseMin" data-precision="2" /></td>
+		</tr>
+		<tr>
+			<td>Max Base Damage:</td>
+			<td><input type="number" id="offHandBaseMax" data-precision="2" /></td>
+		</tr>
+		<tr>
+			<td>Min Physical Damage:</td>
+			<td><input type="number" id="offHandPhysMin" data-precision="2" /></td>
+		</tr>
+		<tr>
+			<td>Max Physical Damage:</td>
+			<td><input type="number" id="offHandPhysMax" data-precision="2" /></td>
+		</tr>
+	</table>
+</div>
+		
+		
+<div class="col">
+	EHP Stats:
+	<table id="EHPStats" class="stats" border="1">
+		<tr>
+			<td>Armor:</td>
+			<td><input type="number" id="armor" data-precision="1" /></td>
+		</tr>
+		<tr>
+			<td>Resist:</td>
+			<td><input type="number" id="resist" data-precision="1" /></td>
+		</tr>
+		<tr>
+			<td>Vitality:</td>
+			<td><input type="number" id="vitality" data-precision="0" /></td>
+		</tr>
+		<tr>
+			<td>Life % Bonus:</td>
+			<td><input type="number" id="HPPercentBonus" data-precision="2" /></td>
+		</tr>
+	</table>
+	
+	<br />
+	
+	<table id="DPSBuffs" class="buffs">
+		<tr>
+			<td>WotHF - Blazing Fists:</td>
+			<td><input id="blazing_fists" type="checkbox" /></td>
+		</tr>
+		<tr>
+			<td>DR - Foresight:</td>
+			<td><input id="foresight" type="checkbox" data-buffvalue="0.18" /></td>
+		</tr>
+		<tr>
+			<td>BoH - Blazing Wrath:</td>
+			<td><input id="blazing_wrath" type="checkbox" data-buffvalue="0.15" /></td>
+		</tr>
+		<tr>
+			<td>Conviction Aura:</td>
+			<td><input id="mantra_of_conviction" type="checkbox" data-buffvalue="0.24" /></td>
+			<td>Overawe:</td>
+			<td><input id="overawe" type="checkbox" data-buffvalue="0.24" /></td>
+		</tr>
+		<tr>
+			<td>Combination Stike:</td>
+			<td><input id="combination_strike" type="checkbox" /></td>
+			<td>
+				<select id="combination_strike_stacks">
+					<option value="1" data-buffvalue="0.08">1</option>
+					<option value="2" data-buffvalue="0.16">2</option>
+					<option value="3" data-buffvalue="0.24">3</option>
+				</select>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div id="maaaaaaaaaath" class="clear">
+	DPS: <input id="DPS" type="number" disabled /> <br />
+	EHP: <input id="EHP" type="number" disabled /> <br />
+	<button type="button" onclick="calculate()">Calculate</button>
+</div>
+
+<br /><br />
+
+<div id="import">
+	<b>Import from Battle.net</b> <br />
+	Battletag: <input type="text" id="battletag" />
+	<button type="button" onclick="crawlProfile()">Load Heroes</button>
+	<div id="heroes" style="display:none;">
+		Hero: <select id="heroSelection"></select>
+		<button type="button" onclick="loadHero()">Load Hero</button>
+	</div>
+</div>
+
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="js/util.js"></script>
+<script src="js/import.js"></script>
+<script src="js/calc.js"></script>
+</body>
+</html>

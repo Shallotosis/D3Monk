@@ -1,0 +1,13 @@
+.clear {
+	clear: both;
+}
+.col {
+	width: 33%; 
+	float: left;
+	text-align: center;
+}
+table {
+	text-align: left;
+	margin-left: auto; 
+	margin-right: auto;
+}
