@@ -74,6 +74,21 @@ function weaponAPS(item) {
 	return item['attacksPerSecond']['min'];
 }
 
+function weaponBonusAPS(item) {
+	if ('Attacks_Per_Second_Bonus' in item)
+		return item['Attacks_Per_Second_Bonus']['min'];
+	else
+		return 0;
+}
+
+function physMin(item) {
+	return item['minDamage']['min'];
+}
+
+function physMax(item) {
+	return item['maxDamage']['min'];
+}
+
 function mainHandAPS() {
 	return weaponAPS(items['mainHand']);
 }
@@ -82,8 +97,12 @@ function offHandAPS() {
 	return weaponAPS(items['offHand']);
 }
 
-function physMin(item) {
-	return item['minDamage']['min'];
+function mainHandBonusAPS() {
+	return weaponBonusAPS(items['mainHand']);
+}
+
+function offHandBonusAPS() {
+	return weaponBonusAPS(items['offHand']);
 }
 
 function mainHandPhysMin() {
@@ -92,10 +111,6 @@ function mainHandPhysMin() {
 
 function offHandPhysMin() {
 	return physMin(items['offHand']);
-}
-
-function physMax(item) {
-	return item['maxDamage']['min'];
 }
 
 function mainHandPhysMax() {

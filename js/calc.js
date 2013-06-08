@@ -38,6 +38,10 @@ function attackSpeedMultiplier() {
 	return multi;
 }
 
+function bonusAPS() {
+	return $('#mainHandBonusAPS').floatVal() + $('#offHandBonusAPS').floatVal();
+}
+
 function buffMultiplier() {
 	var multi = 1;
 	$.each($('.buffs :input:checked'), function(index, buff) {
@@ -49,10 +53,11 @@ function buffMultiplier() {
 }
 
 function APS(hand) {
+	var baseAPS = $('#' + hand + 'APS').floatVal() + bonusAPS();
 	if ($('#blazing_fists').prop('checked'))
-		return ($('#' + hand + 'APS').floatVal() + 0.15) * attackSpeedMultiplier();
+		return (baseAPS + 0.15) * attackSpeedMultiplier();
 	else
-		return $('#' + hand + 'APS').floatVal() * attackSpeedMultiplier();
+		return baseAPS * attackSpeedMultiplier();
 }
 
 function averageAPS() {
