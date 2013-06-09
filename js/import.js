@@ -226,7 +226,7 @@ function HPPercentBonus() {
 
 function resist() {
 	var allRes = sumAttributes('Resistance_All');
-	var maxRes = allRes;
+	var maxRes = 0;
 	ELEMENTAL_DAMAGE_TYPES.forEach(function(type) {
 		var attributeString = 'Resistance#' + type;
 		if (attributeString in cachedAttributes && cachedAttributes[attributeString] > maxRes)
