@@ -52,6 +52,10 @@ function sumAttributes() {
 	return sum;
 }
 
+function importHasOffhand() {
+	return 'offHand' in items;
+}
+
 function elementalDamageBonus() {
 	var elementalDamageBonus = 0;
 	ELEMENTAL_DAMAGE_TYPES.forEach(function(damageType) {
@@ -94,7 +98,10 @@ function mainHandAPS() {
 }
 
 function offHandAPS() {
-	return weaponAPS(items['offHand']);
+	if (importHasOffhand())
+		return weaponAPS(items['offHand']);
+	else
+		return 0;
 }
 
 function mainHandBonusAPS() {
@@ -102,7 +109,10 @@ function mainHandBonusAPS() {
 }
 
 function offHandBonusAPS() {
-	return weaponBonusAPS(items['offHand']);
+	if (importHasOffhand())
+		return weaponBonusAPS(items['offHand']);
+	else
+		return 0;
 }
 
 function mainHandPhysMin() {
@@ -110,7 +120,10 @@ function mainHandPhysMin() {
 }
 
 function offHandPhysMin() {
-	return physMin(items['offHand']);
+	if (importHasOffhand())
+		return physMin(items['offHand']);
+	else
+		return 0;
 }
 
 function mainHandPhysMax() {
@@ -118,7 +131,10 @@ function mainHandPhysMax() {
 }
 
 function offHandPhysMax() {
-	return physMax(items['offHand']);
+	if (importHasOffhand())
+		return physMax(items['offHand']);
+	else
+		return 0;
 }
 
 function baseMin(item) {
@@ -136,7 +152,10 @@ function mainHandBaseMin() {
 }
 
 function offHandBaseMin() {
-	return baseMin(items['offHand']);
+	if (importHasOffhand())
+		return baseMin(items['offHand']);
+	else
+		return 0;
 }
 
 function baseMax(item) {
@@ -155,7 +174,10 @@ function mainHandBaseMax() {
 }
 
 function offHandBaseMax() {
-	return baseMax(items['offHand']);
+	if (importHasOffhand())
+		return baseMax(items['offHand']);
+	else
+		return 0;
 }
 
 function strength() {
@@ -265,6 +287,10 @@ function loadHero() {
 	});
 }
 
+function sanitizeSkill(skillName) {
+	return skillName.replace(/ /g, '_').replace(/'/g, '').toLowerCase()
+}
+
 function setFields() {
 	$.each($('.stats :input'), function(index, fieldSelector) {
 		var field = $(fieldSelector);
@@ -276,13 +302,13 @@ function setFields() {
 	$('input:checked').prop('checked', false);
 	var primarySkills = 0;
 	skills['active'].forEach(function(skill) {
-		$('#' + skill['skill']['name'].replaceAll(' ', '_').toLowerCase()).prop('checked', true);
-		$('#' + skill['rune']['name'].replaceAll(' ', '_').toLowerCase()).prop('checked', true);
+		$('#' + sanitizeSkill(skill['skill']['name'])).prop('checked', true);
+		$('#' + sanitizeSkill(skill['rune']['name'])).prop('checked', true);
 		if (skill['skill']['categorySlug'] == 'primary')
 			primarySkills += 1;
 	});
 	skills['passive'].forEach(function(skill) {
-		$('#' + skill['skill']['name'].replaceAll(' ', '_').toLowerCase()).prop('checked', true);
+		$('#' + sanitizeSkill(skill['skill']['name'])).prop('checked', true);
 	});
 	$('#combination_strike_stacks').val(primarySkills);
 }

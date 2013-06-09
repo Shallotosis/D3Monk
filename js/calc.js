@@ -1,3 +1,7 @@
+function hasOffhand() {
+	return $('#offHandAPS').floatVal() > 0;
+}
+
 function baseDamage(hand) {
 	var physMin = $('#' + hand + 'PhysMin').floatVal() + $('#bonusMin').floatVal();
 	var physMax = $('#' + hand + 'PhysMax').floatVal() + $('#bonusMax').floatVal();
@@ -12,7 +16,10 @@ function baseDamage(hand) {
 }
 
 function averageWeaponDamage() {
-	return (baseDamage('mainHand') + baseDamage('offHand')) / 2;
+	var avgDmg = baseDamage('mainHand');
+	if (hasOffhand())
+		avgDmg = (avgDmg + baseDamage('offHand')) / 2;
+	return avgDmg;
 }
 
 function FitLDamage(hand) {
@@ -20,7 +27,10 @@ function FitLDamage(hand) {
 }
 
 function averageFitLWeaponDamage() {
-	return (FitLDamage('mainHand') + FitLDamage('offHand')) / 2;
+	var avgDmg = FitLDamage('mainHand');
+	if (hasOffhand())
+		avgDmg = (avgDmg + FitLDamage('offHand')) / 2;
+	return avgDmg;
 }
 
 function dexMultiplier() {
@@ -33,7 +43,7 @@ function critMultiplier() {
 
 function attackSpeedMultiplier() {
 	var multi = 1 + $('#IAS').floatVal();
-	if ($('#offHandAPS').val())
+	if (hasOffhand())
 		multi += 0.15;
 	return multi;
 }
@@ -61,7 +71,10 @@ function APS(hand) {
 }
 
 function averageAPS() {
-	return (APS('mainHand') + APS('offHand')) / 2;
+	var avgAPS = APS('mainHand');
+	if (hasOffhand())
+		avgAPS = (avgAPS + APS('offHand')) / 2;
+	return avgAPS;
 }
  
  function FoTAPS() {
