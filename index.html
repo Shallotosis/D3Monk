@@ -180,6 +180,12 @@
 
 <div id="import">
 	<b>Import from Battle.net</b> <br />
+	Region: 
+	<select id="region">
+		<option value="us">Americas</option>
+		<option value="eu">Europe</option>
+		<option value="as">Asia</option>
+	</select><br />
 	Battletag: <input type="text" id="battletag" />
 	<button type="button" onclick="crawlProfile()">Load Heroes</button>
 	<div id="heroes" style="display:none;">

@@ -218,7 +218,7 @@ function armor() {
 }
 
 function getProfileURL() {
-	return 'http://us.battle.net/api/d3/profile/' + $('#battletag').val().replace('#', '-') + '/';
+	return 'http://' + $('#region').val() + '.battle.net/api/d3/profile/' + $('#battletag').val().replace('#', '-') + '/';
 }
 
 function crawlProfile() {
