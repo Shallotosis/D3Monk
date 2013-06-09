@@ -71,12 +71,12 @@ function bonusMax() {
 }
 
 function weaponAPS(item) {
-	return item['attacksPerSecond']['min'];
+	return item['attributesRaw']['Attacks_Per_Second_Item']['min'];
 }
 
 function weaponBonusAPS(item) {
-	if ('Attacks_Per_Second_Bonus' in item)
-		return item['Attacks_Per_Second_Bonus']['min'];
+	if ('Attacks_Per_Second_Item_Bonus' in item['attributesRaw'])
+		return item['attributesRaw']['Attacks_Per_Second_Item_Bonus']['min'];
 	else
 		return 0;
 }
