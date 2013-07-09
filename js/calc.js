@@ -133,29 +133,19 @@ function cycloneDPS(FitLActive) {
 	return base * cycloneCoefficient() * 6 * cyclonesPerSecond();
 }
 
-DPSParts = [FoTDPS, SWDPS, cycloneDPS];
-
 function totalFoTDPS() {
-	return FoTDPS(false) * 0.8 + FoTDPS(true) * 0.2;
+	var uptime = FitLUptime();
+	return FoTDPS(false) * (1 - uptime) + FoTDPS(true) * uptime;
 }
 
 function totalSWDPS() {
-	return SWDPS(false) * 0.8 + SWDPS(true) * 0.2;
+	var uptime = FitLUptime();
+	return SWDPS(false) * (1 - uptime) + SWDPS(true) * uptime;
 }
 
 function totalCycloneDPS() {
-	return cycloneDPS(false) * 0.8 + cycloneDPS(true) * 0.2;
-}
-
-function DPS() {
-	var totalDPS = 0;
 	var uptime = FitLUptime();
-	var downtime = 1 - uptime;
-	DPSParts.forEach(function(part) {
-		totalDPS += part(false) * downtime;
-		totalDPS += part(true) * uptime;
-	});
-	return totalDPS;
+	return cycloneDPS(false) * (1 - uptime) + cycloneDPS(true) * uptime;
 }
 
 function maxHP() {
@@ -177,10 +167,10 @@ function EHP() {
 }
 
 function calculate() {
-	var totalDPS = DPS();
 	var FoT = totalFoTDPS();
 	var SW = totalSWDPS();
 	var cyclone = totalCycloneDPS();
+	var totalDPS = FoT + SW + cyclone;
 	var FoTPercent = FoT / totalDPS;
 	var SWPercent = SW / totalDPS;
 	var cyclonePercent = cyclone / totalDPS;
