@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<div class="col">
+<div class="three-col">
 	DPS Stats:
 	<table id="DPSStats" class="stats" border="1">
 		<tr>
@@ -53,7 +53,7 @@
 	</table>
 </div>
 
-<div class="col">
+<div class="three-col">
 	Main Hand: <br />
 	<table id="mainHand" class="stats" border="1">
 		<tr>
@@ -114,7 +114,7 @@
 </div>
 		
 		
-<div class="col">
+<div class="three-col">
 	EHP Stats:
 	<table id="EHPStats" class="stats" border="1">
 		<tr>
@@ -167,18 +167,17 @@
 				</select>
 			</td>
 		</tr>
+		<tr>
+			<td>Beacon of Ytar:</td>
+			<td><input id="beacon_of_ytar" type="checkbox" /></td>
+		</tr>
 	</table>
-</div>
-
-<div id="maaaaaaaaaath" class="clear">
-	DPS: <input id="DPS" type="number" disabled /> <br />
-	EHP: <input id="EHP" type="number" disabled /> <br />
+	<br /><br />
+	Number of Targets: <input id="targets" type="number" value="1" size="1" />
 	<button type="button" onclick="calculate()">Calculate</button>
 </div>
 
-<br /><br />
-
-<div id="import">
+<div id="import" class="clear">
 	<b>Import from Battle.net</b> <br />
 	Region: 
 	<select id="region">
@@ -192,6 +191,53 @@
 		Hero: <select id="heroSelection"></select>
 		<button type="button" onclick="loadHero()">Load Hero</button>
 	</div>
+</div>
+
+<br /><br />
+
+<div class="two-col">
+	<table id="DPSTable" border="1">
+		<tr>
+			<td>Total DPS:</td>
+			<td><input id="DPS" type="number" disabled /></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Fists of Thunder DPS:</td>
+			<td><input id="FoTDPS" type="number" disabled /></td>
+			<td><input id="FoTDPSPercent" type="number" size="5" disabled /></td>
+		</tr>
+		<tr>
+			<td>Sweeping Wind DPS:</td>
+			<td><input id="SWDPS" type="number" disabled /></td>
+			<td><input id="SWDPSPercent" type="number" size="5" disabled /></td>
+		</tr>
+		<tr>
+			<td>Cyclone DPS:</td>
+			<td><input id="cycloneDPS" type="number" disabled /></td>
+			<td><input id="cycloneDPSPercent" type="number" size="5" disabled /></td>
+		</tr>
+	</table>
+</div>
+<div class="two-col">
+	<table id="EHPTable" border="1">
+		<tr>
+			<td>EHP:</td>
+			<td><input id="EHP" type="number" disabled /></td>
+		</tr>
+		<tr>
+			<td>Max HP:</td>
+			<td><input id="HP" type="number" disabled /></td>
+		</tr>
+		<tr>
+			<td>Total Mitigarion:</td>
+			<td><input id="mitigation" type="number" disabled /></td>
+		</tr>
+		<tr>
+			<td>HP:EHP Ratio:</td>
+			<td><input id="EHPRatio" type="number" disabled /></td>
+		</tr>
+	</table>
 </div>
 
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>

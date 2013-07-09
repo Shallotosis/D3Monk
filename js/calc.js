@@ -2,7 +2,7 @@ function hasOffhand() {
 	return $('#offHandAPS').floatVal() > 0;
 }
 
-function baseDamage(hand) {
+function baseWeaponDamage(hand) {
 	var physMin = $('#' + hand + 'PhysMin').floatVal() + $('#bonusMin').floatVal();
 	var physMax = $('#' + hand + 'PhysMax').floatVal() + $('#bonusMax').floatVal();
 	var physAvg = (physMin + physMax) / 2;
@@ -16,14 +16,14 @@ function baseDamage(hand) {
 }
 
 function averageWeaponDamage() {
-	var avgDmg = baseDamage('mainHand');
+	var avgDmg = baseWeaponDamage('mainHand');
 	if (hasOffhand())
-		avgDmg = (avgDmg + baseDamage('offHand')) / 2;
+		avgDmg = (avgDmg + baseWeaponDamage('offHand')) / 2;
 	return avgDmg;
 }
 
 function FitLDamage(hand) {
-	return baseDamage(hand) * (1 + (0.3 * APS(hand)));
+	return baseWeaponDamage(hand) * (1 + (0.3 * APS(hand)));
 }
 
 function averageFitLWeaponDamage() {
@@ -31,6 +31,10 @@ function averageFitLWeaponDamage() {
 	if (hasOffhand())
 		avgDmg = (avgDmg + FitLDamage('offHand')) / 2;
 	return avgDmg;
+}
+
+function FitLUptime() {
+	return $('#beacon_of_ytar').prop('checked') ? 0.25 : 0.2;
 }
 
 function dexMultiplier() {
@@ -65,9 +69,8 @@ function buffMultiplier() {
 function APS(hand) {
 	var baseAPS = $('#' + hand + 'APS').floatVal() + bonusAPS();
 	if ($('#blazing_fists').prop('checked'))
-		return (baseAPS + 0.15) * attackSpeedMultiplier();
-	else
-		return baseAPS * attackSpeedMultiplier();
+		baseAPS += 0.15;
+	return baseAPS * attackSpeedMultiplier();
 }
 
 function averageAPS() {
@@ -82,11 +85,17 @@ function averageAPS() {
 }
 
 function cyclonesPerSecond() {
-	return FoTAPS() * $('#CHC').floatVal() * 1.25;
+	var CHC = $('#CHC').floatVal();
+	var APS = FoTAPS();
+	return APS * CHC * 1.25 + APS * CHC * 0.75 * ($('#targets').floatVal() - 1);
 }
 
 function FoTCoefficient() {
-	return 1.45 * (1 + $('#FoTBonus').floatVal()) * (1 + $('#lightningSkillBonus').floatVal());
+	return 1.1 * (1 + $('#FoTBonus').floatVal()) * (1 + $('#lightningSkillBonus').floatVal());
+}
+
+function TCCoefficient() {
+	return 0.35 * (1 + $('#FoTBonus').floatVal()) * (1 + $('#lightningSkillBonus').floatVal());
 }
 
 function SWCoefficient() {
@@ -97,40 +106,56 @@ function cycloneCoefficient() {
 	return 0.26 * (1 + $('#SWBonus').floatVal()) * (1 + $('#lightningSkillBonus').floatVal());
 }
 
-function FoTDPS() {
-	return averageWeaponDamage() * dexMultiplier() * critMultiplier() * FoTAPS() * FoTCoefficient() * buffMultiplier();
+function baseAverageDamage(FitLActive) {
+	if (FitLActive)
+		return averageFitLWeaponDamage() * dexMultiplier() * critMultiplier() * buffMultiplier();
+	else
+		return averageWeaponDamage() * dexMultiplier() * critMultiplier() * buffMultiplier();
 }
 
-function SWDPS() {
-	return averageWeaponDamage() * dexMultiplier() * critMultiplier() * averageAPS() * SWCoefficient() * buffMultiplier();
+function FoTDPS(FitLActive) {
+	var base = baseAverageDamage(FitLActive);
+	var APS = FoTAPS();
+	var primaryTargetDPS = base * APS * (FoTCoefficient() + TCCoefficient());
+	var secondaryTargetDPS = base * APS * (FoTCoefficient() / 3 + TCCoefficient());
+	return primaryTargetDPS + secondaryTargetDPS * ($('#targets').floatVal() - 1);
 }
 
-function cycloneDPS() {
-	return averageWeaponDamage() * dexMultiplier() * critMultiplier() * cycloneCoefficient() * buffMultiplier() * 6;
+function SWDPS(FitLActive) {
+	var base = baseAverageDamage(FitLActive);
+	var APS = averageAPS();
+	var DPS = base * APS * SWCoefficient();
+	return DPS * $('#targets').floatVal();
 }
 
-function FitLFoTDPS() {
-	return averageFitLWeaponDamage() * dexMultiplier() * critMultiplier() * FoTAPS() * FoTCoefficient() * buffMultiplier();
+function cycloneDPS(FitLActive) {
+	var base = baseAverageDamage(FitLActive);
+	return base * cycloneCoefficient() * 6 * cyclonesPerSecond();
 }
 
-function FitLSWDPS() {
-	return averageFitLWeaponDamage() * dexMultiplier() * critMultiplier() * averageAPS() * SWCoefficient() * buffMultiplier();
+DPSParts = [FoTDPS, SWDPS, cycloneDPS];
+
+function totalFoTDPS() {
+	return FoTDPS(false) * 0.8 + FoTDPS(true) * 0.2;
 }
 
-function FitLCycloneDPS() {
-	return averageFitLWeaponDamage() * dexMultiplier() * critMultiplier() * cycloneCoefficient()  * buffMultiplier() * 6;
+function totalSWDPS() {
+	return SWDPS(false) * 0.8 + SWDPS(true) * 0.2;
 }
 
-function nonFitLDPS() {
-	return FoTDPS() + SWDPS() + cycloneDPS() * cyclonesPerSecond();
-}
-
-function FitLDPS() {
-	return FitLFoTDPS() + FitLSWDPS() + FitLCycloneDPS() * cyclonesPerSecond();
+function totalCycloneDPS() {
+	return cycloneDPS(false) * 0.8 + cycloneDPS(true) * 0.2;
 }
 
 function DPS() {
-	return nonFitLDPS() * 0.8 + FitLDPS() * 0.2;
+	var totalDPS = 0;
+	var uptime = FitLUptime();
+	var downtime = 1 - uptime;
+	DPSParts.forEach(function(part) {
+		totalDPS += part(false) * downtime;
+		totalDPS += part(true) * uptime;
+	});
+	return totalDPS;
 }
 
 function maxHP() {
@@ -152,6 +177,31 @@ function EHP() {
 }
 
 function calculate() {
-	$('#DPS').val(commaFormat(DPS().toFixed(2)));
-	$('#EHP').val(commaFormat(EHP().toFixed(2)));
+	var totalDPS = DPS();
+	var FoT = totalFoTDPS();
+	var SW = totalSWDPS();
+	var cyclone = totalCycloneDPS();
+	var FoTPercent = FoT / totalDPS;
+	var SWPercent = SW / totalDPS;
+	var cyclonePercent = cyclone / totalDPS;
+
+	$('#DPS').val(commaFormat(totalDPS, 2));
+	
+	$('#FoTDPS').val(commaFormat(FoT, 2));
+	$('#SWDPS').val(commaFormat(SW, 2));
+	$('#cycloneDPS').val(commaFormat(cyclone, 2));
+	
+	$('#FoTDPSPercent').val(percentFormat(FoTPercent, 2));
+	$('#SWDPSPercent').val(percentFormat(SWPercent, 2));
+	$('#cycloneDPSPercent').val(percentFormat(cyclonePercent, 2));
+	
+	var HP = maxHP();
+	var mitigation = DR();
+	var effectiveHealth = HP / (1 - mitigation);
+	var ratio = effectiveHealth / HP;
+	
+	$('#EHP').val(commaFormat(effectiveHealth, 2));
+	$('#HP').val(commaFormat(HP));
+	$('#mitigation').val(percentFormat(mitigation, 2));
+	$('#EHPRatio').val("1:" + commaFormat(ratio, 2));
 }

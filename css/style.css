@@ -1,7 +1,12 @@
 .clear {
 	clear: both;
 }
-.col {
+.two-col {
+	width: 50%; 
+	float: left;
+	text-align: center;
+}
+.three-col {
 	width: 33%; 
 	float: left;
 	text-align: center;
